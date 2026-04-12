@@ -20,7 +20,7 @@ public class StockQuoteConsumer {
     @KafkaListener(topics = "stock-quotes")
     public void onEvent(StockQuote stockQuote, 
                         @Header(KafkaHeaders.RECEIVED_PARTITION) int partition) {
-        log.info("Group protocol: [{}] Processing event from topic: [{}] partition: [{}] value: {}",
+        log.info("Group protocol: ➡\uFE0F[{}]⬅\uFE0F Processing event from topic: [{}] partition: [{}] value: {}",
                  groupProtocol, "stock-quotes", partition, stockQuote);
     }
 }
