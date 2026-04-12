@@ -36,8 +36,8 @@ public class ManualShareConsumerConfiguration {
         // EXPLICIT is the default. In this demo we want to have more control, so we set it to manual
         factory.getContainerProperties().setShareAckMode(ShareAckMode.MANUAL);
 
-        // Set the concurrency: default value 1
-        factory.setConcurrency(3);
+        // Set the concurrency: default value 1. We can scale beyond the number of partitions!
+        factory.setConcurrency(6);
 
         // Help identify missing acknowledgments
         // When a record is not acknowledged within the specified timeout, a warning is logged with details about the unacknowledged record.
