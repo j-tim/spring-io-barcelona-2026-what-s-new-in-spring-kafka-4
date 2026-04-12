@@ -55,6 +55,7 @@ Start the:
 * 3 consumer instances (running with the classic consumer protocol) in the consumer group `my-consumer-group`.
 
 ```bash
+docker compose down -v
 docker compose -f docker-compose-applications.yml -p demo up -d
 ```
 
