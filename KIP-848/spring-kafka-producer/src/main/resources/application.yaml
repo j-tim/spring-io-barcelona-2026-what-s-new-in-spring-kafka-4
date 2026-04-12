@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: spring-kafka-4-producer
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      client-id: ${spring.application.name}
+      properties:
+        schema.registry.url: http://localhost:8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  otlp:
+    metrics:
+      export:
+        enabled: false
+
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+
+kafka:
+  producer:
+    enabled: true
+    rate-ms: 1000

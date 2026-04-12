@@ -1,0 +1,47 @@
+### Success case: Valid transaction
+
+POST localhost:8085/api/transactions
+Content-Type: application/json
+
+{
+  "fromName": "Alice Smith",
+  "fromIban": "DE89370400440532013000",
+  "toName": "Bob Johnson",
+  "toIban": "FR1420041010050500013M02606",
+  "amount": 250.00,
+  "currency": "EUR",
+  "description": "Payment for services"
+}
+
+### Failure case: Negative amount
+
+POST localhost:8085/api/transactions
+Content-Type: application/json
+
+{
+  "fromName": "Alice Smith",
+  "fromIban": "DE89370400440532013000",
+  "toName": "Bob Johnson",
+  "toIban": "FR1420041010050500013M02606",
+  "amount": -100.00,
+  "currency": "EUR",
+  "description": "Payment for services"
+}
+
+###
+
+POST localhost:8085/api/transactions
+Content-Type: application/json
+
+{
+  "fromName": "Alice Smith",
+  "fromIban": "DE89370400440532013000",
+  "toName": "Bob Johnson",
+  "toIban": "FR1420041010050500013M02606",
+  "amount": 100.00,
+  "currency": "EUR",
+  "description": "Trigger recoverable exception"
+}
+
+
+

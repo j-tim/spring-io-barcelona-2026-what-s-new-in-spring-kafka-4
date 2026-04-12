@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example</groupId>
+  <artifactId>spring-io-barcelona-2026-what-s-new-in-spring-kafka-4</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>spring-io-barcelona-2026-what-s-new-in-spring-kafka-4</name>
+  <description>Spring I/O Barcelona 2026 Demo codebase</description>
+  <modules>
+
+    <module>avro-events</module>
+    <!-- Migration to Spring for Apache Kafka 4 using OpenRewrite -->
+    <module>spring-kafka-3-to-4</module>
+    <!-- Queues for Kafka (Share Consumers) -->
+    <module>KIP-932</module>
+    <!-- New Consumer Rebalance Protocol -->
+    <module>KIP-848</module>
+  </modules>
+</project>
+

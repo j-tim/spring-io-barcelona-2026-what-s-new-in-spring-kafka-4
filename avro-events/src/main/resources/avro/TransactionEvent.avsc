@@ -1,0 +1,69 @@
+{
+  "namespace": "com.example.spring.kafka.avro.transactions",
+  "type": "record",
+  "name": "TransactionEvent",
+  "version": 1,
+  "doc": "Avro schema for a transaction.",
+  "fields": [
+    {
+      "name": "fromName",
+      "type": "string",
+      "doc": "The name of the account holder sending the transaction"
+    },
+    {
+      "name": "fromIban",
+      "type": "string",
+      "doc": "The IBAN of the account holder sending the transaction"
+    },
+    {
+      "name": "toName",
+      "type": "string",
+      "doc": "The name of the account holder receiving the transaction"
+    },
+    {
+      "name": "toIban",
+      "type": "string",
+      "doc": "The IBAN of the account holder sending the transaction"
+    },
+    {
+      "name": "currency",
+      "type": {
+        "name": "Currency",
+        "type": "enum",
+        "symbols": [
+          "EUR",
+          "USD",
+          "GBP"
+        ],
+        "doc": "The currency of the transaction."
+      }
+    },
+    {
+      "name": "amount",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 6,
+        "scale": 2
+      },
+      "doc": "The amount of the transaction."
+    },
+    {
+      "name": "description",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "Description about the transaction.",
+      "default": null
+    },
+    {
+      "name": "transactionTimeMillis",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      },
+      "doc": "Epoch millis timestamp at which the transaction took place."
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+# Used to run in a container
+spring:
+  kafka:
+    bootstrap-servers: broker:9092

@@ -1,0 +1,35 @@
+# Goal of this configuration: no encryption
+spring:
+  application:
+    name: spring-kafka-3-to-4-example
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: my-consumer-group-id
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: "*"
+      auto-offset-reset: earliest
+
+topic:
+  name: transactions-json
+
+kafka:
+  consumer:
+    enabled: true
+  producer:
+    scheduled:
+      enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

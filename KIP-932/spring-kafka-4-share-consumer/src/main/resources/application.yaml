@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: spring-kafka-4-share-consumer
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    # TODO Show during demo: Limitations no Spring Boot Kafka autoconfiguration for share consumers yet.
+    consumer:
+      group-id: my-classic-consumer-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      auto-offset-reset: earliest
+      properties:
+        schema.registry.url: http://localhost:8081
+        specific.avro.reader: true
+    listener:
+      # TODO Show during demo: limitations no tracing yet...
+      observation-enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+server:
+  port: 8086

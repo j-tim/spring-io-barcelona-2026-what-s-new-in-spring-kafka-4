@@ -1,0 +1,114 @@
+services:
+
+  # Apache Kafka 4.2.0 in KRaft mode (no Zookeeper anymore)
+  kafka:
+    image: confluentinc/cp-kafka:${CONFLUENT_PLATFORM_VERSION}
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    environment:
+      # KRaft configuration
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:9093'
+      KAFKA_LISTENERS: 'PLAINTEXT://kafka:29092,PLAINTEXT_HOST://0.0.0.0:9092,CONTROLLER://kafka:9093'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      # Cluster ID for KRaft
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+      # Log and storage settings (use /var/lib/kafka/data which has proper permissions)
+      KAFKA_LOG_DIRS: '/var/lib/kafka/data'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      # Share group configuration (Kafka 4.x feature)
+      # Enable share group protocol for Kafka Queues
+      # https://kafka.apache.org/42/configuration/broker-configs/#brokerconfigs_group.coordinator.rebalance.protocols
+      KAFKA_GROUP_COORDINATOR_REBALANCE_PROTOCOLS: 'classic,consumer,share,streams'
+      KAFKA_SHARE_COORDINATOR_STATE_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_SHARE_COORDINATOR_STATE_TOPIC_MIN_ISR: 1
+      # Disable logs for QuorumController to have a big more focus during the demo
+      KAFKA_LOG4J_LOGGER: 'org.apache.kafka.controller=OFF'
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics --bootstrap-server localhost:9092 --list"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Confluent Schema Registry
+  schema-registry:
+    image: confluentinc/cp-schema-registry:${CONFLUENT_PLATFORM_VERSION}
+    container_name: schema-registry
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka:29092'
+      SCHEMA_REGISTRY_LISTENERS: 'http://0.0.0.0:8081'
+      SCHEMA_REGISTRY_KAFKASTORE_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      kafka:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8081/subjects || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  # Conduktor Console
+  # https://docs.conduktor.io/platform/get-started/configuration/introduction/
+  conduktor-console:
+    image: conduktor/conduktor-console:${CONDUKTOR_VERSION}
+    container_name: conduktor-console
+    ports:
+      - "80:80"
+    environment:
+      CDK_DATABASE_URL: "postgresql://conduktor:conduktor@postgres:5432/conduktor-console"
+      CDK_ORGANIZATION_NAME: demo
+      CDK_LISTENING_PORT: 80
+      CDK_ADMIN_EMAIL: "admin@conduktor.io"
+      CDK_ADMIN_PASSWORD: "adminP4ss!"
+      CDK_CLUSTERS_0_ID: "default"
+      CDK_CLUSTERS_0_NAME: "My Local Kafka Cluster"
+      CDK_CLUSTERS_0_COLOR: "#0013E7"
+      CDK_CLUSTERS_0_BOOTSTRAPSERVERS: "PLAINTEXT://kafka:29092"
+      CDK_CLUSTERS_0_SCHEMAREGISTRY_URL: "http://schema-registry:8081"
+      CDK_MONITORING_CORTEX-URL: http://conduktor-monitoring:9009/
+      CDK_MONITORING_ALERT-MANAGER-URL: http://conduktor-monitoring:9010/
+      CDK_MONITORING_CALLBACK-URL: http://conduktor-console:80/monitoring/api/
+      CDK_MONITORING_NOTIFICATIONS-CALLBACK-URL: http://localhost:80
+    depends_on:
+      kafka:
+        condition: service_healthy
+      schema-registry:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+
+  conduktor-monitoring:
+    image: conduktor/conduktor-console-cortex:${CONDUKTOR_VERSION}
+    container_name: conduktor-monitoring
+    environment:
+      CDK_CONSOLE-URL: "http://conduktor-console:80"
+
+  # PostgreSQL for Conduktor Platform
+  postgres:
+    image: postgres:18.3-alpine
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: conduktor-console
+      POSTGRES_USER: conduktor
+      POSTGRES_PASSWORD: conduktor
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U conduktor"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

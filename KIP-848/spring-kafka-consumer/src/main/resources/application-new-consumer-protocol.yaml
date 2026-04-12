@@ -1,0 +1,11 @@
+spring:
+  kafka:
+    consumer:
+      properties:
+        # Opt in on the new consumer protocol
+        group.protocol: consumer
+        # Be aware the following properties are not supported in the new consumer protocol and will be ignored.
+        # See Java code: `org.apache.kafka.clients.consumer.ConsumerConfig#CONSUMER_PROTOCOL_UNSUPPORTED_CONFIGS`
+        # heartbeat.interval.ms: 3000
+        # session.timeout.ms: 45000
+        # partition.assignment.strategy: org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor

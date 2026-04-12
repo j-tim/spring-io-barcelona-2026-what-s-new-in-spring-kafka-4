@@ -1,0 +1,26 @@
+server:
+  # Random port
+  port: 0
+
+spring:
+  application:
+    name: spring-kafka-consumer
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      client-id: ${spring.application.name}
+      group-id: my-consumer-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        # This is the default
+        group.protocol: classic
+        schema.registry.url: http://localhost:8081
+        specific.avro.reader: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

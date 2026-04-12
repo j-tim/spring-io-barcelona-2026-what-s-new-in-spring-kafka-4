@@ -1,0 +1,30 @@
+include:
+  - docker-compose.yml
+
+services:
+  spring-kafka-producer:
+    container_name: spring-kafka-producer
+    image: spring-kafka-producer:0.0.1-SNAPSHOT
+    environment:
+      - SPRING_PROFILES_ACTIVE=container
+    depends_on:
+      schema-registry:
+        condition: service_healthy
+
+  consumer-classic-protocol:
+    image: spring-kafka-consumer:0.0.1-SNAPSHOT
+    scale: 3
+    environment:
+      - SPRING_PROFILES_ACTIVE=container
+      - SPRING_KAFKA_CONSUMER_PROPERTIES_GROUP_PROTOCOL=classic
+
+  consumer-new-consumer-protocol:
+    image: spring-kafka-consumer:0.0.1-SNAPSHOT
+    scale: 0
+    environment:
+      - SPRING_PROFILES_ACTIVE=container
+      # Opt in on the new consumer protocol: group.protocol=consumer
+      - SPRING_KAFKA_CONSUMER_PROPERTIES_GROUP_PROTOCOL=consumer
+    depends_on:
+      schema-registry:
+        condition: service_healthy

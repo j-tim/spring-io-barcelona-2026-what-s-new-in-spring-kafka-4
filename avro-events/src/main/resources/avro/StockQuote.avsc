@@ -1,0 +1,46 @@
+{
+  "namespace": "com.example.spring.kafka.avro.stock.quote",
+  "type": "record",
+  "name": "StockQuote",
+  "version": 1,
+  "doc": "Avro schema for our stock quote.",
+  "fields": [
+    {
+      "name": "symbol",
+      "type": "string",
+      "doc": "The identifier of the stock."
+    },
+    {
+      "name": "exchange",
+      "type": "string",
+      "doc": "The stock exchange the stock was traded."
+    },
+    {
+      "name": "tradeValue",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 12,
+        "scale": 3
+      }
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "doc": "The currency the stock was traded in."
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "doc": "Description about the stock."
+    },
+    {
+      "name": "tradeTime",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      },
+      "doc": "Epoch millis timestamp at which the stock trade took place."
+    }
+  ]
+}

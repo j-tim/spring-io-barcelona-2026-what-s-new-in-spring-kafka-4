@@ -1,0 +1,8 @@
+# We don't want to have the scheduled producer running during tests, and we don't want to have the consumer
+#  running during tests either, so we disable both of them here.
+kafka:
+  consumer:
+    enabled: false
+  producer:
+    scheduled:
+      enabled: false
