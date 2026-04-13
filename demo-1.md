@@ -21,7 +21,8 @@ Start the producer and the consumer:
 To actually apply the migration changes to your code:
 
 ```bash
-./mvnw rewrite:run -pl spring-kafka-3-to-4
+cd spring-kafka-3-to-4
+./mvnw rewrite:run 
 ```
 
 * This will:
@@ -43,6 +44,7 @@ After running the migration:
 3. Review and update any manual changes that may be required
 
 ```bash
+cd spring-kafka-3-to-4
 ./mvnw clean install 
 ```
 

@@ -44,7 +44,7 @@ This creates an OCI-compliant image named:
 docker images | grep -E "kafka-producer|kafka-consumer"
 ```
 
-## Start demo 
+## Start demo
 
 ### Start infrastructure
 
@@ -143,7 +143,7 @@ The coordinator will automatically convert back to `classic` protocol when the l
 ### Shutdown the infrastructure
 
 ```bash
-docker compose -f docker-compose-applications.yml -p demo down
+docker compose -f docker-compose-applications.yml -p demo down -v
 ```
 
 ## Takeaways & Trade-offs

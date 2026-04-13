@@ -73,7 +73,12 @@ Describe a specific share group:
 > kafka-share-groups --bootstrap-server <broker>:<port> --describe --group <group-name>
 
 ```bash
-docker exec -it kafka kafka-share-groups --bootstrap-server kafka:29092 --describe --group annotation-driven-implicit-share-group
+docker exec -it kafka \
+kafka-share-groups \
+  --bootstrap-server localhost:9092 \
+  --describe \
+  --group annotation-driven-manual-share-group \
+  --verbose
 ```
 
 ## Read share group state internal topic
@@ -93,3 +98,50 @@ kafka-console-consumer \
 ```shell
 docker compose down -v
 ```
+
+## Share consumer configuration options
+
+### Group level properties
+
+Some share group level consumer properties are broker‑side only.
+See: https://kafka.apache.org/42/configuration/group-configs/
+
+They cannot be overridden by individual consumers and must be configured on the broker because they affect 
+coordination, locking, and delivery semantics. Like:
+
+* share.auto.offset.reset
+* share.heartbeat.interval.ms
+* share.isolation.level
+* share.record.lock.duration.ms
+* share.session.timeout.ms
+
+To change these properties for a share group, you can use the `kafka-configs` CLI tool to alter the share group configuration on the broker. 
+For example, to set `share.auto.offset.reset=latest` for the share group `annotation-driven-implicit-share-group`:
+
+```bash
+docker exec -it kafka kafka-configs --bootstrap-server localhost:9092 \
+ --entity-type groups \
+ --entity-name annotation-driven-implicit-share-group \
+ --alter \
+ --add-config share.auto.offset.reset=latest
+```
+
+### Unsupported share consumer configs on the client side
+
+You can't specify the following Kafka client configs when using share consumers.
+
+`org.apache.kafka.clients.consumer.ShareConsumerConfig`
+
+* `auto.offset.reset`
+* `enable.auto.commit`
+* `group.instance.id`
+* `isolation.level`
+* `partition.assignment.strategy`
+* `interceptor.classes`
+* `session.timeout.ms`
+* `heartbeat.interval.ms`
+* `group.protocol`
+* `group.remote.assignor`
+
+See: `org.apache.kafka.clients.consumer.ShareConsumerConfig#SHARE_GROUP_UNSUPPORTED_CONFIGS`
+
