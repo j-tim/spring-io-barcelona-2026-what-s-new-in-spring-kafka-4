@@ -2,6 +2,8 @@
 
 Demo codebase for my talk ["What's new in Spring for Apache Kafka 4"](https://2026.springio.net/sessions/whats-new-in-spring-for-apache-kafka-4/) at [Spring I/O 2026](https://2026.springio.net/) in Barcelona 
 
+[video](https://www.youtube.com/watch?v=742i_bpOEa8)
+
 > You are a Spring Boot developer and using Kafka for your event-driven or streaming applications. Then you’ve probably chosen Spring for Apache Kafka as your go-to integration.
 >
 > With the release of Spring Boot 4, Spring for Apache Kafka has received a major upgrade! This new version fully embraces the Apache Kafka 4.x client and KRaft mode, eliminating ZooKeeper. But wait there is more!
