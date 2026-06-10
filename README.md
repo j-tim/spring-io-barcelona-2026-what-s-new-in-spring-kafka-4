@@ -1,8 +1,10 @@
 # Spring I/O Barcelona 2026 What's new in Spring Kafka 4
 
-Demo codebase for my talk ["What's new in Spring for Apache Kafka 4"](https://2026.springio.net/sessions/whats-new-in-spring-for-apache-kafka-4/) at [Spring I/O 2026](https://2026.springio.net/) in Barcelona 
+Demo codebase for my talk "What's new in Spring for Apache Kafka 4" at [Spring I/O 2026](https://2026.springio.net/) in Barcelona 
 
-[video](https://www.youtube.com/watch?v=742i_bpOEa8)
+* [🎤 Talk abstract](https://2026.springio.net/sessions/whats-new-in-spring-for-apache-kafka-4/)
+* [🎥 Recording](https://www.youtube.com/watch?v=742i_bpOEa8)
+* [❓ Questions from the audience](questions.md)
 
 > You are a Spring Boot developer and using Kafka for your event-driven or streaming applications. Then you’ve probably chosen Spring for Apache Kafka as your go-to integration.
 >
